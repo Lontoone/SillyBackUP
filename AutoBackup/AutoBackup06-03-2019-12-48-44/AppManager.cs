@@ -264,13 +264,16 @@ namespace AutoBackup
             if ((string)Settings.Default["AllYN"] == "Y") {
                 return true;
             }
-            else if ((string)Settings.Default["AllYN"] == "N") {
-                return false;
-            }
 
             //比較目前資料夾與備份資料夾修改時間
             if (Directory.GetLastWriteTime(_folderPath) <= Directory.GetLastWriteTime(_BackupFolder))
             {
+                //一律跳過
+                if ((string)Settings.Default["AllYN"] == "N")
+                {
+                    return false;
+                }
+
                 DialogResult _dialogResult = MessageBox.Show(_folderPath + "沒有近期更改紀錄，請問還需要備分嗎?ヾ(•ω•`)o", "沒有近期更改紀錄", MessageBoxButtons.OKCancel);
                 //仍要備分
                 if (_dialogResult == DialogResult.OK)
